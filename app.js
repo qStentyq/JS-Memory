@@ -2,8 +2,7 @@ document.addEventListener("DOMContentLoaded",() =>
 {
 const section = document.querySelector("section")
 const playerLivesCount = document.querySelector("span")
-const playerLives = 3;
-
+let playerLives = 10;
 playerLivesCount.textContent = playerLives
 
 //Generate data
@@ -51,6 +50,7 @@ const cardGenerator = () => {
         back.classList = "back";
 
         face.src = item.imgSrc
+        card.setAttribute('name', item.name);
 
         section.appendChild(card);
         card.appendChild(face);
@@ -59,9 +59,73 @@ const cardGenerator = () => {
         card.addEventListener('click', (e) => 
         {
             card.classList.toggle('toggleCard');
+            checkCards(e);
         })
     });
 };
 
+//Check Cards
+const checkCards = (e) => {
+    const clickedCard = e.target;
+    clickedCard.classList.add('flipped');
+    const flippedCards = document.querySelectorAll('.flipped')
+    
+    //Logic 
+    if(flippedCards.length === 2)
+    {
+        if(flippedCards[0].getAttribute('name') === flippedCards[1].getAttribute('name'))
+        {
+            console.log('match')
+            flippedCards.forEach((item) => {
+                item.classList.remove('flipped');
+                item.style.pointerEvents = 'none'
+            })
+            checkAll();
+        } else {
+            console.log('wrong')
+            flippedCards.forEach((item) => {
+                item.classList.remove('flipped')
+                setTimeout(function() {item.classList.remove('toggleCard')}, 800)
+            })
+            playerLives--;
+            playerLivesCount.textContent = playerLives;
+            if(playerLives <= 0)
+            {
+                restart()
+                zeroLifes()
+            }
+        }
+    }
+    
+}
+const checkAll = () =>
+{
+    const allCards = document.querySelectorAll('.card');
+    const toggledCards = document.querySelectorAll('.toggleCard')
+    console.log(allCards.length, toggledCards.length)
+    if(allCards.length === toggledCards.length)
+    {
+        document.getElementById('popup').style = "display: block";
+        
+    }
+}
+
+zeroLifes = () =>
+{
+    document.getElementById('popup').style = "display: block";
+    let title = document.querySelector('.popup_title')
+    title.innerHTML = `Game is finished!<br>You lost`
+}
+
+//RESTART 
+const restart = () => {
+    let cardData = randomize();
+    let faces = document.querySelectorAll(".face");
+    let cards = document.querySelectorAll(".card");
+    cardData.forEach((item,index) => {
+        cards[index].classList.remove('toggleCard');
+    })
+}
+
 cardGenerator();
-})
+});
