@@ -1,44 +1,46 @@
 document.addEventListener("DOMContentLoaded",() =>
 {
 const section = document.querySelector("section")
-const playerLivesCount = document.querySelector("span")
+let deckBack = 'Numbers'
+const playerLivesCount = document.querySelector("h1")
 let playerLives = 10;
-playerLivesCount.textContent = playerLives
-
 //Generate data
 
-const getData = () => [
-    {imgSrc: "./images/one.png", name: "one"},
-    {imgSrc: "./images/two.png", name: "two"},
-    {imgSrc: "./images/three.png", name: "three"},
-    {imgSrc: "./images/four.png", name: "four"},
-    {imgSrc: "./images/five.png", name: "five"},
-    {imgSrc: "./images/six.png", name: "six"},
-    {imgSrc: "./images/seven.png", name: "seven"},
-    {imgSrc: "./images/eight.png", name: "eight"},
-    {imgSrc: "./images/one.png", name: "one"},
-    {imgSrc: "./images/two.png", name: "two"},
-    {imgSrc: "./images/three.png", name: "three"},
-    {imgSrc: "./images/four.png", name: "four"},
-    {imgSrc: "./images/five.png", name: "five"},
-    {imgSrc: "./images/six.png", name: "six"},
-    {imgSrc: "./images/seven.png", name: "seven"},
-    {imgSrc: "./images/eight.png", name: "eight"},
+const getData = (deckBack) => [
+    {imgSrc: `./images/${deckBack}/one.png`, name: "one"},
+    {imgSrc: `./images/${deckBack}/two.png`, name: "two"},
+    {imgSrc: `./images/${deckBack}/three.png`, name: "three"},
+    {imgSrc: `./images/${deckBack}/four.png`, name: "four"},
+    {imgSrc: `./images/${deckBack}/five.png`, name: "five"},
+    {imgSrc: `./images/${deckBack}/six.png`, name: "six"},
+    {imgSrc: `./images/${deckBack}/seven.png`, name: "seven"},
+    {imgSrc: `./images/${deckBack}/eight.png`, name: "eight"},
+    {imgSrc: `./images/${deckBack}/one.png`, name: "one"},
+    {imgSrc: `./images/${deckBack}/two.png`, name: "two"},
+    {imgSrc: `./images/${deckBack}/three.png`, name: "three"},
+    {imgSrc: `./images/${deckBack}/four.png`, name: "four"},
+    {imgSrc: `./images/${deckBack}/five.png`, name: "five"},
+    {imgSrc: `./images/${deckBack}/six.png`, name: "six"},
+    {imgSrc: `./images/${deckBack}/seven.png`, name: "seven"},
+    {imgSrc: `./images/${deckBack}/eight.png`, name: "eight"},
     
 ];
 
 //Randomize func
 
-const randomize = () => {
-    const cardData = getData()
+const randomize = (deckBack) => {
+    const cardData = getData(deckBack)
     cardData.sort(() => Math.random() - 0.5);
     return cardData
 };
 
 //Card Generator
 
-const cardGenerator = () => {
-    const cardData = randomize();
+const cardGenerator = (deckBack) => {
+    const cardData = randomize(deckBack);
+
+    console.log(playerLivesCount.parentElement, playerLivesCount)
+    playerLivesCount.textContent = `Lives: ${playerLives}`
     //HTML generation
 
     cardData.forEach((item) => {
@@ -88,7 +90,7 @@ const checkCards = (e) => {
                 setTimeout(function() {item.classList.remove('toggleCard')}, 800)
             })
             playerLives--;
-            playerLivesCount.textContent = playerLives;
+            playerLivesCount.textContent = `Lives: ${playerLives}`;
             if(playerLives <= 0)
             {
                 restart()
@@ -127,5 +129,21 @@ const restart = () => {
     })
 }
 
-cardGenerator();
+const checkPopUp = () => {
+    buttons = document.querySelectorAll('.popup_button')
+    buttons.forEach((item) => {
+        item.addEventListener('click', () => {
+            deckBack = item.id
+            console.log(deckBack)
+            cardGenerator(deckBack)
+            document.getElementById('popup2').style = "display: none";
+        })
+    })
+}
+
+checkPopUp()
+
 });
+
+
+
