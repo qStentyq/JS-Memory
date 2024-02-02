@@ -38,8 +38,6 @@ const randomize = (deckBack) => {
 
 const cardGenerator = (deckBack) => {
     const cardData = randomize(deckBack);
-
-    console.log(playerLivesCount.parentElement, playerLivesCount)
     playerLivesCount.textContent = `Lives: ${playerLives}`
     //HTML generation
 
@@ -98,13 +96,11 @@ const checkCards = (e) => {
             }
         }
     }
-    
 }
 const checkAll = () =>
 {
     const allCards = document.querySelectorAll('.card');
     const toggledCards = document.querySelectorAll('.toggleCard')
-    console.log(allCards.length, toggledCards.length)
     if(allCards.length === toggledCards.length)
     {
         document.getElementById('popup').style = "display: block";
